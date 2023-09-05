@@ -12,5 +12,4 @@ public partial class SettingsViewModel : ObservableObject
 
 	[ObservableProperty]
 	Settings appSettings;
-
 }

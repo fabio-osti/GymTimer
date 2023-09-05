@@ -1,28 +1,25 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using GymTimer.Helpers;
 using GymTimer.Models;
 using GymTimer.Views;
 using Plugin.Maui.Audio;
+using System.Timers;
 
 namespace GymTimer.ViewModels;
 
 public partial class TimerViewModel : ObservableObject
 {
 	static Page MainPage => Application.Current.MainPage;
-	IAudioPlayer bell;
-	IAudioPlayer done;
-	IAudioManager audioManager;
-	IDispatcherTimer timer;
 
-	public TimerViewModel()
+	public TimerViewModel(Ringer ringer, Settings appSettings)
 	{
-		audioManager = AudioManager.Current;
-		FileSystem.OpenAppPackageFileAsync("bell.wav").ContinueWith((e) => bell = audioManager.CreatePlayer(e.Result));
-		FileSystem.OpenAppPackageFileAsync("done.wav").ContinueWith((e) => done = audioManager.CreatePlayer(e.Result));
+		_ringer = ringer;
+		_appSettings = appSettings;
 
-		timer = MainPage.Dispatcher.CreateTimer();
-		timer.Interval = TimeSpan.FromSeconds(1);
-		timer.Tick += (s, e) =>
+		timer = new System.Timers.Timer(1000);
+		timer.Elapsed += (s, e) =>
 		{
 			if (TimerValue <= 0 && Resting) {
 				if (AppSettings.AutoStartSet) {
@@ -37,25 +34,26 @@ public partial class TimerViewModel : ObservableObject
 		};
 	}
 
-	async void PlaySound()
+	void PlaySound()
 	{
 		if (!AppSettings.PlaySounds) return;
 		switch (TimerValue) {
 			case > 0 and <= 3:
-				bell.Play();
-				await Task.Delay(500);
-				bell.Stop();
+				_ringer.RingFinishingBell();
 				break;
 			case 0:
-				done.Play();
+				_ringer.RingFinishedBell();
 				break;
 			default: break;
 		}
 	}
 
+	readonly System.Timers.Timer timer;
+	readonly Ringer _ringer;
+
 	[ObservableProperty]
-	Settings appSettings = new();	
-	
+	Settings _appSettings;
+
 	[ObservableProperty]
 	int restDuration = 60;
 
@@ -79,12 +77,13 @@ public partial class TimerViewModel : ObservableObject
 	public string TimerDisplay => TimeSpan.FromSeconds(TimerValue).ToString(@"m\:ss");
 
 	public string TimerDescription =>
-		Resting && timer.IsRunning ? "Rest" : "Set";
+		Resting && timer.Enabled ? "Rest" : "Set";
 
 	[RelayCommand]
 	public void ShowSettings()
 	{
-		MainPage.Navigation.PushModalAsync(new ContentPage { Content = new SettingsView(AppSettings) });
+		Shell.Current.GoToAsync("Settings");
+		//MainPage.Navigation.PushModalAsync(_settingsView);
 	}
 
 	[RelayCommand]

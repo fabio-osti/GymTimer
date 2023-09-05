@@ -16,4 +16,8 @@
 								ContentTemplate="{DataTemplate local:TimerView}"
 								Route="MainPage" />
 
+	<ShellContent Title="Settings"
+								ContentTemplate="{DataTemplate local:SettingsView}"
+								Route="Settings" />
+
 </Shell>

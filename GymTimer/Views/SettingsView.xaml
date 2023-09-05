@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 						 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-						 x:Class="GymTimer.Views.SettingsView"
+						 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 						 xmlns:viewmodels="clr-namespace:GymTimer.ViewModels"
-						 x:DataType="viewmodels:SettingsViewModel">
+						 x:Class="GymTimer.Views.SettingsView"
+						 x:DataType="viewmodels:SettingsViewModel"
+						 Title="Settings">
 	<VerticalStackLayout Margin="32"
 											 HorizontalOptions="Center"
 											 VerticalOptions="Center">
@@ -14,7 +16,7 @@
 
 			<Label Grid.Column="0"
 						 Grid.Row="0"
-						 Text="Automatically begin set when the rest is over"
+						 Text="Automatically start set"
 						 VerticalOptions="Center"
 						 HorizontalOptions="Start" />
 			<Switch Grid.Column="1"
@@ -23,7 +25,7 @@
 
 			<Label Grid.Column="0"
 						 Grid.Row="1"
-						 Text="Play sound to alert when the rest is almost over"
+						 Text="Play sounds"
 						 VerticalOptions="Center"
 						 HorizontalOptions="Start" />
 			<Switch Grid.Column="1"
@@ -32,7 +34,7 @@
 
 			<Label Grid.Column="0"
 						 Grid.Row="2"
-						 Text="Show notification when the rest is over"
+						 Text="Show notifications"
 						 VerticalOptions="Center"
 						 HorizontalOptions="Start" />
 			<Switch Grid.Column="1"
@@ -40,12 +42,6 @@
 							IsToggled="{Binding AppSettings.ShowNotification}" />
 
 		</Grid>
-		
-		<BoxView HeightRequest="32"
-						 WidthRequest="0" />
-		
-		<Button Text="Ok"
-						Clicked="Close"
-						WidthRequest="200"/>
+	
 	</VerticalStackLayout>
-</ContentView>
+</ContentPage>

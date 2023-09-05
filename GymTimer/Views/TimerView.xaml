@@ -85,10 +85,6 @@
 		</Style>
 	</ContentPage.Resources>
 
-	<ContentPage.BindingContext>
-		<viewmodels:TimerViewModel />
-	</ContentPage.BindingContext>
-
 	<ContentPage.ToolbarItems>
 		<ToolbarItem
 			Command="{Binding ShowSettingsCommand}"			>
