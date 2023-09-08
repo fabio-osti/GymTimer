@@ -5,101 +5,58 @@ using GymTimer.Helpers;
 using GymTimer.Models;
 using GymTimer.Views;
 using Plugin.Maui.Audio;
-using System.Timers;
 
 namespace GymTimer.ViewModels;
 
-public partial class TimerViewModel : ObservableObject
+public sealed partial class TimerViewModel : ObservableObject
 {
 	static Page MainPage => Application.Current.MainPage;
 
-	public TimerViewModel(Ringer ringer, Settings appSettings)
+	public TimerViewModel(Chronometer chrono, Ringer ringer)
 	{
-		_ringer = ringer;
-		_appSettings = appSettings;
+		Chrono = chrono;
 
-		timer = new System.Timers.Timer(1000);
-		timer.Elapsed += (s, e) =>
+		Chrono.PropertyChanged += (e, h) =>
 		{
-			if (TimerValue <= 0 && Resting) {
-				if (AppSettings.AutoStartSet) {
-					BeginSet();
-				} else {
-					timer.Stop();
-					return;
-				}
-			}
-			TimerValue--;
-			PlaySound();
+			OnPropertyChanged(nameof(TimerDisplay));
+			OnPropertyChanged(nameof(TimerSize));
+			OnPropertyChanged(nameof(TimerDescription));
 		};
+
+		Chrono.OnRunningOut += ringer.RingFinishingBell;
+		Chrono.OnOver += ringer.RingFinishedBell;
 	}
 
-	void PlaySound()
-	{
-		if (!AppSettings.PlaySounds) return;
-		switch (TimerValue) {
-			case > 0 and <= 3:
-				_ringer.RingFinishingBell();
-				break;
-			case 0:
-				_ringer.RingFinishedBell();
-				break;
-			default: break;
-		}
-	}
 
-	readonly System.Timers.Timer timer;
-	readonly Ringer _ringer;
+	public int TimerSize => Chrono.TimerValue >= 600 ? 92 : 78;
 
+	public string TimerDisplay => TimeSpan.FromSeconds(Chrono.TimerValue).ToString(@"m\:ss");
+
+	public string TimerDescription =>
+		Chrono.IsResting ? "Rest" : "Set";
+	
 	[ObservableProperty]
-	Settings _appSettings;
-
-	[ObservableProperty]
-	int restDuration = 60;
-
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TimerDescription))]
-	bool resting = true;
-
-	[ObservableProperty]
-	[NotifyPropertyChangedFor(nameof(TimerDisplay))]
-	[NotifyPropertyChangedFor(nameof(TimerSize))]
-	int timerValue;
-
-	[ObservableProperty]
-	int setsCompleted;
+	Chronometer _chrono;
 
 	[ObservableProperty]
 	bool refreshing;
 
-	public int TimerSize => TimerValue >= 600 ? 92 : 78;
-
-	public string TimerDisplay => TimeSpan.FromSeconds(TimerValue).ToString(@"m\:ss");
-
-	public string TimerDescription =>
-		Resting && timer.Enabled ? "Rest" : "Set";
-
 	[RelayCommand]
-	public void ShowSettings()
+	public static void ShowSettings()
 	{
 		Shell.Current.GoToAsync("Settings");
-		//MainPage.Navigation.PushModalAsync(_settingsView);
 	}
 
 	[RelayCommand]
 	public void BeginSet()
 	{
-		Resting = false;
-		TimerValue = 0;
-		timer.Start();
+		Chrono.BeginSet();
 	}
 
 	[RelayCommand]
 	public void BeginRest()
 	{
-		TimerValue = RestDuration;
-		Resting = true;
-		SetsCompleted++;
+		Chrono.BeginRest();
 	}
 
 	[RelayCommand]
@@ -113,10 +70,7 @@ public partial class TimerViewModel : ObservableObject
 			"No"
 		);
 		if (answer) {
-			timer.Stop();
-			TimerValue = 0;
-			SetsCompleted = 0;
-			Resting = true;
+			Chrono.Reset();
 		}
 		Refreshing = false;
 	}
@@ -127,12 +81,12 @@ public partial class TimerViewModel : ObservableObject
 		string rest = await MainPage.DisplayPromptAsync(
 			"Completed Sets",
 			"Enter the number of completed sets:",
-			initialValue: SetsCompleted.ToString()
+			initialValue: Chrono.SetsCompleted.ToString()
 		);
 		if (string.IsNullOrEmpty(rest)) {
 			return;
-		} else if (int.TryParse(rest, out int _GymTimer)) {
-			SetsCompleted = _GymTimer;
+		} else if (int.TryParse(rest, out int _setsCompleted)) {
+			Chrono.SetsCompleted = _setsCompleted;
 		} else {
 			await MainPage.DisplayAlert(
 				"Invalid entry",
@@ -148,12 +102,12 @@ public partial class TimerViewModel : ObservableObject
 		string rest = await MainPage.DisplayPromptAsync(
 			"Rest Duration",
 			"Enter the desired rest duration in seconds:",
-			initialValue: RestDuration.ToString()
+			initialValue: Chrono.RestDuration.ToString()
 		);
 		if (string.IsNullOrEmpty(rest)) {
 			return;
 		} else if (int.TryParse(rest, out int _restDuration)) {
-			RestDuration = _restDuration;
+			Chrono.RestDuration = _restDuration;
 		} else {
 			await MainPage.DisplayAlert(
 				"Invalid entry",

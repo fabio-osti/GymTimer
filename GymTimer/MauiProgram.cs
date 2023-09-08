@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Plugin.LocalNotification;
 using GymTimer.Helpers;
 using GymTimer.Models;
 using GymTimer.ViewModels;
@@ -15,6 +16,7 @@ public static class MauiProgram
 		builder
 			.UseMauiApp<App>()
 			.UseMauiCommunityToolkit()
+			.UseLocalNotification()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("MaterialIcons-Regular", "MaterialRegular");
@@ -25,6 +27,7 @@ public static class MauiProgram
 		builder.Services
 			.AddSingleton<Settings>()
 			.AddSingletonWithShellRoute<SettingsView, SettingsViewModel>("Settings")
+			.AddSingleton<Chronometer>()
 			.AddSingleton<Ringer>()
 			.AddSingletonWithShellRoute<TimerView, TimerViewModel>("MainPage");
 

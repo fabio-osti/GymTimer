@@ -1,4 +1,5 @@
-﻿using Plugin.Maui.Audio;
+﻿using GymTimer.Models;
+using Plugin.Maui.Audio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,38 +10,43 @@ namespace GymTimer.Helpers
 {
 	public class Ringer
 	{
-		readonly Task<IAudioPlayer> finishing;
-		readonly Task<IAudioPlayer> finished;
+		readonly Task<IAudioPlayer> runningOutPlayer;
+		readonly Task<IAudioPlayer> overPlayer;
 		readonly IAudioManager audioManager;
+		readonly Settings _appSettings;
 
-		public Ringer()
+		public Ringer(Settings settings)
 		{
 			audioManager = AudioManager.Current;
-			finishing = LoadFile("bell.wav");
-			finished = LoadFile("done.wav");
+			runningOutPlayer = LoadFile("runningout.mp3");
+			overPlayer = LoadFile("over.mp3");
+			_appSettings = settings;
 		}
 
-		private async Task<IAudioPlayer> LoadFile(string fileName) => 
+		private async Task<IAudioPlayer> LoadFile(string fileName) =>
 			audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync(fileName));
 
 		public async void RingFinishingBellAsync()
 		{
-			var player = await finishing;
-			player.Play();
-			await Task.Delay(500);
-			player.Stop();
+			if (_appSettings.PlaySounds) {
+				var player = await runningOutPlayer;
+				player.Play();
+				await Task.Delay(500);
+				player.Stop();
+			}
 		}
 
 		public async void RingFinishedBellAsync()
 		{
-			var player = await finished;
-			player.Play();
+			if (_appSettings.PlaySounds) {
+				(await overPlayer).Play();
+			}
 		}
 
 		public void RingFinishingBell()
 		{
-			if (finishing.IsCompleted) {
-				var player = finishing.Result;
+			if (runningOutPlayer.IsCompleted && _appSettings.PlaySounds) {
+				var player = runningOutPlayer.Result;
 				player.Play();
 				Task.Delay(500).ContinueWith((_) => player.Stop());
 			}
@@ -48,9 +54,8 @@ namespace GymTimer.Helpers
 
 		public void RingFinishedBell()
 		{
-			if (finished.IsCompleted) {
-				var player = finished.Result;
-				player.Play();
+			if (overPlayer.IsCompleted && _appSettings.PlaySounds) {
+				overPlayer.Result.Play();
 			}
 		}
 	}

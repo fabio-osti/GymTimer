@@ -125,7 +125,7 @@
 											 Style="{StaticResource DescriptionLabel}" />
 
 								<Label x:Name="CounterLabel"
-											 Text="{Binding SetsCompleted}"
+											 Text="{Binding Chrono.SetsCompleted}"
 											 Style="{StaticResource ValueLabel}" />
 
 							</AbsoluteLayout>
@@ -172,7 +172,7 @@
 								 WidthRequest="0" />
 
 				<control:IfView x:Name="TimerButton"
-												Condition="{Binding Resting}">
+												Condition="{Binding Chrono.RestState}">
 
 					<Button x:Name="StartSetButton"
 									Command="{Binding BeginSetCommand}"
