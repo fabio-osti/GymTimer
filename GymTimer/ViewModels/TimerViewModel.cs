@@ -1,22 +1,22 @@
-﻿using CommunityToolkit.Maui.Views;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using GymTimer.Helpers;
 using GymTimer.Models;
-using GymTimer.Views;
-using Plugin.Maui.Audio;
 
 namespace GymTimer.ViewModels;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public sealed partial class TimerViewModel : ObservableObject
 {
-	static Page MainPage => Application.Current.MainPage;
+	[ObservableProperty] private Chronometer chrono;
+
+	[ObservableProperty] private bool refreshing;
 
 	public TimerViewModel(Chronometer chrono, Ringer ringer)
 	{
 		Chrono = chrono;
 
-		Chrono.PropertyChanged += (e, h) =>
+		Chrono.PropertyChanged += (_, _) =>
 		{
 			OnPropertyChanged(nameof(TimerDisplay));
 			OnPropertyChanged(nameof(TimerSize));
@@ -27,6 +27,8 @@ public sealed partial class TimerViewModel : ObservableObject
 		Chrono.OnOver += ringer.RingFinishedBell;
 	}
 
+	private static Page MainPage => Application.Current?.MainPage;
+
 
 	public int TimerSize => Chrono.TimerValue >= 600 ? 92 : 78;
 
@@ -34,12 +36,6 @@ public sealed partial class TimerViewModel : ObservableObject
 
 	public string TimerDescription =>
 		Chrono.IsResting ? "Rest" : "Set";
-	
-	[ObservableProperty]
-	Chronometer _chrono;
-
-	[ObservableProperty]
-	bool refreshing;
 
 	[RelayCommand]
 	public static void ShowSettings()
@@ -63,7 +59,7 @@ public sealed partial class TimerViewModel : ObservableObject
 	public async Task Reset()
 	{
 		Refreshing = true;
-		bool answer = await MainPage.DisplayAlert(
+		var answer = await MainPage.DisplayAlert(
 			"Reset?",
 			"Would you like to reset the counter?",
 			"Yes",
@@ -78,14 +74,15 @@ public sealed partial class TimerViewModel : ObservableObject
 	[RelayCommand]
 	public async Task ShowCounterPrompt()
 	{
-		string rest = await MainPage.DisplayPromptAsync(
+		var rest = await MainPage.DisplayPromptAsync(
 			"Completed Sets",
 			"Enter the number of completed sets:",
 			initialValue: Chrono.SetsCompleted.ToString()
 		);
 		if (string.IsNullOrEmpty(rest)) {
 			return;
-		} else if (int.TryParse(rest, out int _setsCompleted)) {
+		}
+		if (int.TryParse(rest, out var _setsCompleted)) {
 			Chrono.SetsCompleted = _setsCompleted;
 		} else {
 			await MainPage.DisplayAlert(
@@ -99,14 +96,15 @@ public sealed partial class TimerViewModel : ObservableObject
 	[RelayCommand]
 	public async Task ShowTimerPrompt()
 	{
-		string rest = await MainPage.DisplayPromptAsync(
+		var rest = await MainPage.DisplayPromptAsync(
 			"Rest Duration",
 			"Enter the desired rest duration in seconds:",
 			initialValue: Chrono.RestDuration.ToString()
 		);
 		if (string.IsNullOrEmpty(rest)) {
 			return;
-		} else if (int.TryParse(rest, out int _restDuration)) {
+		}
+		if (int.TryParse(rest, out var _restDuration)) {
 			Chrono.RestDuration = _restDuration;
 		} else {
 			await MainPage.DisplayAlert(

@@ -2,7 +2,7 @@ using GymTimer.ViewModels;
 
 namespace GymTimer.Views;
 
-public partial class TimerView : ContentPage
+public partial class TimerView
 {
 	public TimerView(TimerViewModel viewModel)
 	{

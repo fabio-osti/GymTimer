@@ -5,11 +5,10 @@ namespace GymTimer.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {
+	[ObservableProperty] private Settings appSettings;
+
 	public SettingsViewModel(Settings _settings)
 	{
 		AppSettings = _settings;
 	}
-
-	[ObservableProperty]
-	Settings appSettings;
 }

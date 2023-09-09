@@ -1,62 +1,37 @@
 ﻿using GymTimer.Models;
 using Plugin.Maui.Audio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GymTimer.Helpers
+namespace GymTimer.Helpers;
+
+public class Ringer
 {
-	public class Ringer
+	private readonly Settings _appSettings;
+	private readonly IAudioManager audioManager;
+	private readonly Task<IAudioPlayer> overPlayer;
+	private readonly Task<IAudioPlayer> runningOutPlayer;
+
+	public Ringer(Settings settings)
 	{
-		readonly Task<IAudioPlayer> runningOutPlayer;
-		readonly Task<IAudioPlayer> overPlayer;
-		readonly IAudioManager audioManager;
-		readonly Settings _appSettings;
+		audioManager = AudioManager.Current;
+		runningOutPlayer = LoadFile("runningout.mp3");
+		overPlayer = LoadFile("over.mp3");
+		_appSettings = settings;
+	}
 
-		public Ringer(Settings settings)
-		{
-			audioManager = AudioManager.Current;
-			runningOutPlayer = LoadFile("runningout.mp3");
-			overPlayer = LoadFile("over.mp3");
-			_appSettings = settings;
-		}
+	private async Task<IAudioPlayer> LoadFile(string fileName) =>
+		audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync(fileName));
 
-		private async Task<IAudioPlayer> LoadFile(string fileName) =>
-			audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync(fileName));
+	public void RingFinishingBell()
+	{
+		if (!runningOutPlayer.IsCompleted || !_appSettings.PlaySounds) return;
+		var player = runningOutPlayer.Result;
+		player.Play();
+		Task.Delay(500).ContinueWith(_ => player.Stop());
+	}
 
-		public async void RingFinishingBellAsync()
-		{
-			if (_appSettings.PlaySounds) {
-				var player = await runningOutPlayer;
-				player.Play();
-				await Task.Delay(500);
-				player.Stop();
-			}
-		}
-
-		public async void RingFinishedBellAsync()
-		{
-			if (_appSettings.PlaySounds) {
-				(await overPlayer).Play();
-			}
-		}
-
-		public void RingFinishingBell()
-		{
-			if (runningOutPlayer.IsCompleted && _appSettings.PlaySounds) {
-				var player = runningOutPlayer.Result;
-				player.Play();
-				Task.Delay(500).ContinueWith((_) => player.Stop());
-			}
-		}
-
-		public void RingFinishedBell()
-		{
-			if (overPlayer.IsCompleted && _appSettings.PlaySounds) {
-				overPlayer.Result.Play();
-			}
-		}
+	public void RingFinishedBell()
+	{
+		if (!overPlayer.IsCompleted || !_appSettings.PlaySounds) return;
+		overPlayer.Result.Play();
 	}
 }

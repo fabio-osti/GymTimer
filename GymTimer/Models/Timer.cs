@@ -1,34 +1,44 @@
-﻿using CommunityToolkit.Maui.Views;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using GymTimer.Helpers;
-using GymTimer.Models;
-using GymTimer.Views;
-using Microsoft.Maui.Controls;
-using Plugin.Maui.Audio;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace GymTimer.Models;
 
 public sealed partial class Chronometer : ObservableRecipient
 {
 	public delegate void TimerEvent();
-	public TimerEvent OnRunningOut { get; set; }
-	public TimerEvent OnOver { get; set; }
+
+	private readonly Settings appSettings;
+
+	private readonly Timer timer;
+
+	[ObservableProperty] [NotifyPropertyChangedRecipients]
+	private bool restState = true;
+
+	[ObservableProperty] private int setsCompleted;
+
+	[ObservableProperty] [NotifyPropertyChangedRecipients]
+	private int timerValue;
 
 	public Chronometer(Settings appSettings)
 	{
-		_appSettings = appSettings;
+		this.appSettings = appSettings;
 
-		timer = new System.Timers.Timer(1000);
-		timer.Elapsed += (_, _) => Tick();
-		;
+		timer = new Timer(1000);
+		timer.Elapsed += Tick;
 	}
 
-	public void Tick()
+	public TimerEvent OnRunningOut { get; set; }
+	public TimerEvent OnOver { get; set; }
+
+	public bool IsResting => RestState && timer.Enabled;
+
+	public int RestDuration { get; set; } = 60;
+
+	private void Tick(object o, ElapsedEventArgs e)
 	{
 		if (TimerValue <= 0 && RestState) {
-			if (_appSettings.AutoStartSet) {
+			if (appSettings.AutoStartSet) {
 				BeginSet();
 			} else {
 				timer.Stop();
@@ -36,37 +46,21 @@ public sealed partial class Chronometer : ObservableRecipient
 			}
 		}
 
-
-		switch (TimerValue) {
-			case > 0 and <= 3:
-				OnRunningOut?.BeginInvoke(null, null);
-				break;
-			case 0:
-				OnOver?.BeginInvoke(null, null);
-				break;
-			default: break;
-		}
+		new Thread(() =>
+			{
+				switch (TimerValue) {
+					case > 0 and <= 3:
+						OnRunningOut?.Invoke();
+						break;
+					case 0:
+						OnOver?.Invoke();
+						break;
+				}
+			}
+		).Start();
 
 		TimerValue--;
 	}
-
-	readonly System.Timers.Timer timer;
-	readonly Settings _appSettings;
-
-	public bool IsResting => RestState && timer.Enabled;
-
-	public int RestDuration { get; set; } = 60;
-
-	[ObservableProperty]
-	[NotifyPropertyChangedRecipients]
-	bool restState = true;
-
-	[ObservableProperty]
-	[NotifyPropertyChangedRecipients]
-	int timerValue;
-
-	[ObservableProperty]
-	int setsCompleted;
 
 	public void BeginSet()
 	{

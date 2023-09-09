@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Maui;
-using Plugin.LocalNotification;
 using GymTimer.Helpers;
 using GymTimer.Models;
 using GymTimer.ViewModels;
 using GymTimer.Views;
 using Microsoft.Extensions.Logging;
+using Plugin.LocalNotification;
 
 namespace GymTimer;
 
