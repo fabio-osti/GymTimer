@@ -1,45 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:GymTimer.ViewModels"
-             x:Class="GymTimer.Views.SettingsView"
-             x:DataType="viewmodels:SettingsViewModel"
-             Title="Settings">
-    <VerticalStackLayout Margin="32"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:GymTimer.ViewModels"
+    x:Class="GymTimer.Views.SettingsView"
+    x:DataType="viewmodels:SettingsViewModel"
+    Title="Settings">
+    <VerticalStackLayout
+        Margin="32"
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
 
         <Grid
             ColumnDefinitions="4*, 1*"
             RowDefinitions="auto, auto, auto">
 
-            <Label Grid.Column="0"
-                   Grid.Row="0"
-                   Text="Automatically start set"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start" />
-            <Switch Grid.Column="1"
-                    Grid.Row="0"
-                    IsToggled="{Binding AppSettings.AutoStartSet}" />
+            <Label
+                Grid.Column="0"
+                Grid.Row="0"
+                Text="Automatically start set"
+                VerticalOptions="Center"
+                HorizontalOptions="Start" />
+            <Switch
+                Grid.Column="1"
+                Grid.Row="0"
+                IsToggled="{Binding AppSettings.AutoStartSet}" />
 
-            <Label Grid.Column="0"
-                   Grid.Row="1"
-                   Text="Play sounds"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start" />
-            <Switch Grid.Column="1"
-                    Grid.Row="1"
-                    IsToggled="{Binding AppSettings.PlaySounds}" />
+            <Label
+                Grid.Column="0"
+                Grid.Row="1"
+                Text="Play sounds"
+                VerticalOptions="Center"
+                HorizontalOptions="Start" />
+            <Switch
+                Grid.Column="1"
+                Grid.Row="1"
+                IsToggled="{Binding AppSettings.PlaySounds}" />
 
-            <Label Grid.Column="0"
-                   Grid.Row="2"
-                   Text="Show notifications"
-                   VerticalOptions="Center"
-                   HorizontalOptions="Start" />
-            <Switch Grid.Column="1"
-                    Grid.Row="2"
-                    IsToggled="{Binding AppSettings.ShowNotification}" />
+            <Label
+                Grid.Column="0"
+                Grid.Row="2"
+                Text="Show notifications"
+                VerticalOptions="Center"
+                HorizontalOptions="Start" />
+            <Switch
+                Grid.Column="1"
+                Grid.Row="2"
+                IsToggled="{Binding AppSettings.ShowNotification}" />
 
         </Grid>
 

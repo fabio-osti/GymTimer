@@ -5,9 +5,9 @@ namespace GymTimer.Views;
 
 public partial class SettingsView : ContentPage
 {
-	public SettingsView(Settings settings)
-	{
-		InitializeComponent();
-		BindingContext = new SettingsViewModel(settings);
-	}
+    public SettingsView(Settings settings)
+    {
+        InitializeComponent();
+        BindingContext = new SettingsViewModel(settings);
+    }
 }
