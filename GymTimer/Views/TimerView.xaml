@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -6,182 +6,180 @@
              xmlns:viewmodels="clr-namespace:GymTimer.ViewModels"
              x:Class="GymTimer.Views.TimerView"
              x:DataType="viewmodels:TimerViewModel"
-             Title="Timer">
+             Title="Timer" >
 
-    <ContentPage.Resources>
-        <Style x:Key="PrimaryButton"
-               TargetType="Button">
-            <Setter Property="TextColor"
-                    Value="White" />
-            <Setter Property="BackgroundColor"
-                    Value="{DynamicResource Primary}" />
-            <Setter Property="FontSize"
-                    Value="24" />
-            <Setter Property="FontAttributes"
-                    Value="Bold" />
-            <Setter Property="HeightRequest"
-                    Value="92" />
-            <Setter Property="WidthRequest"
-                    Value="148" />
-            <Setter Property="HorizontalOptions"
-                    Value="Center" />
-        </Style>
-        <Style x:Key="ValueBorder"
-               TargetType="Border">
-            <Setter Property="StrokeThickness"
-                    Value="3" />
-            <Setter Property="StrokeShape"
-                    Value="RoundRectangle 112" />
-            <Setter Property="Margin"
-                    Value="12" />
-            <Setter Property="HeightRequest"
-                    Value="224" />
-            <Setter Property="WidthRequest"
-                    Value="224" />
-            <Setter Property="AbsoluteLayout.LayoutBounds"
-                    Value="0.6,0.5" />
-            <Setter Property="AbsoluteLayout.LayoutFlags"
-                    Value="PositionProportional" />
-        </Style>
-        <Style x:Key="EditButton"
-               TargetType="Button">
-            <Setter Property="BackgroundColor"
-                    Value="Transparent" />
-            <Setter Property="CornerRadius"
-                    Value="200" />
-            <Setter Property="AbsoluteLayout.LayoutBounds"
-                    Value="1,0" />
-            <Setter Property="AbsoluteLayout.LayoutFlags"
-                    Value="PositionProportional" />
-            <Setter Property="Margin"
-                    Value="-10" />
-        </Style>
-        <Style x:Key="DescriptionLabel"
-               TargetType="Label">
-            <Setter Property="FontSize"
-                    Value="26" />
-            <Setter Property="AbsoluteLayout.LayoutBounds"
-                    Value="0.5,0.1" />
-            <Setter Property="AbsoluteLayout.LayoutFlags"
-                    Value="PositionProportional" />
-        </Style>
-        <Style x:Key="ValueLabel"
-               TargetType="Label">
-            <Setter Property="FontSize"
-                    Value="92" />
-            <Setter Property="AbsoluteLayout.LayoutBounds"
-                    Value="0.5,0.5" />
-            <Setter Property="AbsoluteLayout.LayoutFlags"
-                    Value="PositionProportional" />
-        </Style>
-    </ContentPage.Resources>
+  <ContentPage.Resources>
+    <Style x:Key="PrimaryButton"
+           TargetType="Button" >
+      <Setter Property="TextColor"
+              Value="White" />
+      <Setter Property="BackgroundColor"
+              Value="{DynamicResource Primary}" />
+      <Setter Property="FontSize"
+              Value="24" />
+      <Setter Property="FontAttributes"
+              Value="Bold" />
+      <Setter Property="HeightRequest"
+              Value="92" />
+      <Setter Property="WidthRequest"
+              Value="148" />
+      <Setter Property="HorizontalOptions"
+              Value="Center" />
+    </Style>
+    <Style x:Key="ValueBorder"
+           TargetType="Border" >
+      <Setter Property="StrokeThickness"
+              Value="3" />
+      <Setter Property="StrokeShape"
+              Value="RoundRectangle 112" />
+      <Setter Property="Margin"
+              Value="12" />
+      <Setter Property="HeightRequest"
+              Value="224" />
+      <Setter Property="WidthRequest"
+              Value="224" />
+      <Setter Property="AbsoluteLayout.LayoutBounds"
+              Value="0.6,0.5" />
+      <Setter Property="AbsoluteLayout.LayoutFlags"
+              Value="PositionProportional" />
+    </Style>
+    <Style x:Key="EditButton"
+           TargetType="Button" >
+      <Setter Property="BackgroundColor"
+              Value="Transparent" />
+      <Setter Property="CornerRadius"
+              Value="200" />
+      <Setter Property="AbsoluteLayout.LayoutBounds"
+              Value="1,0" />
+      <Setter Property="AbsoluteLayout.LayoutFlags"
+              Value="PositionProportional" />
+      <Setter Property="Margin"
+              Value="-10" />
+      <Setter Property="ImageSource" >
+        <FontImageSource FontFamily="MaterialIcons-Regular"
+                         Glyph="&#xe3c9;"
+                         Size="28"
+                         Color="{AppThemeBinding 
+                                        Light={StaticResource Black}, 
+                                        Dark={StaticResource White}}" />
+      </Setter>
+    </Style>
+    <Style x:Key="DescriptionLabel"
+           TargetType="Label" >
+      <Setter Property="FontSize"
+              Value="26" />
+      <Setter Property="AbsoluteLayout.LayoutBounds"
+              Value="0.5,0.1" />
+      <Setter Property="AbsoluteLayout.LayoutFlags"
+              Value="PositionProportional" />
+    </Style>
+    <Style x:Key="ValueLabel"
+           TargetType="Label" >
+      <Setter Property="FontSize"
+              Value="92" />
+      <Setter Property="AbsoluteLayout.LayoutBounds"
+              Value="0.5,0.5" />
+      <Setter Property="AbsoluteLayout.LayoutFlags"
+              Value="PositionProportional" />
+    </Style>
+  </ContentPage.Resources>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem
-            Command="{Binding ShowSettingsCommand}">
-            <ToolbarItem.IconImageSource>
-                <FontImageSource FontFamily="MaterialIcons-Regular"
-                                 Glyph="&#xe8b8;" />
-            </ToolbarItem.IconImageSource>
-        </ToolbarItem>
-    </ContentPage.ToolbarItems>
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Command="{Binding ShowSettingsCommand}" >
+      <ToolbarItem.IconImageSource>
+        <FontImageSource FontFamily="MaterialIcons-Regular"
+                         Glyph="&#xe8b8;" />
+      </ToolbarItem.IconImageSource>
+    </ToolbarItem>
+  </ContentPage.ToolbarItems>
 
-    <RefreshView VerticalOptions="Center"
-                 IsRefreshing="{Binding Refreshing}"
-                 Command="{Binding ResetCommand}">
-        <ScrollView>
+  <RefreshView VerticalOptions="Center"
+               IsRefreshing="{Binding Refreshing}"
+               Command="{Binding ResetCommand}" >
 
+    <ScrollView>
 
-            <VerticalStackLayout Spacing="8"
-                                 VerticalOptions="Center">
-                <HorizontalStackLayout HorizontalOptions="Center">
-                    <AbsoluteLayout>
+      <VerticalStackLayout Spacing="8"
+                           VerticalOptions="Center" >
 
-                        <Button Command="{Binding ShowCounterPromptCommand}"
-                                Style="{StaticResource EditButton}">
-                            <Button.ImageSource>
-                                <FontImageSource FontFamily="MaterialIcons-Regular"
-                                                 Glyph="&#xe3c9;"
-                                                 Size="28"
-                                                 Color="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-                            </Button.ImageSource>
-                        </Button>
+        <HorizontalStackLayout HorizontalOptions="Center" >
 
-                        <Border Style="{StaticResource ValueBorder}">
-                            <AbsoluteLayout HeightRequest="228"
-                                            VerticalOptions="Center">
+          <AbsoluteLayout>
 
-                                <Label x:Name="CounterDescription"
-                                       Text="Sets"
-                                       Style="{StaticResource DescriptionLabel}" />
+            <Button Command="{Binding ShowCounterPromptCommand}"
+                    Style="{StaticResource EditButton}" />
 
-                                <Label x:Name="CounterLabel"
-                                       Text="{Binding Chrono.SetsCompleted}"
-                                       Style="{StaticResource ValueLabel}" />
+            <Border Style="{StaticResource ValueBorder}" >
 
-                            </AbsoluteLayout>
-                        </Border>
+              <AbsoluteLayout HeightRequest="228"
+                              VerticalOptions="Center" >
 
-                    </AbsoluteLayout>
-                </HorizontalStackLayout>
+                <Label Text="Sets"
+                       Style="{StaticResource DescriptionLabel}" />
 
-                <HorizontalStackLayout HorizontalOptions="Center">
-                    <AbsoluteLayout>
+                <Label Text="{Binding Chrono.SetsCompleted}"
+                       Style="{StaticResource ValueLabel}" />
 
-                        <Button Command="{Binding ShowTimerPromptCommand}"
-                                Style="{StaticResource EditButton}">
-                            <Button.ImageSource>
-                                <FontImageSource FontFamily="MaterialIcons-Regular"
-                                                 Size="28"
-                                                 Glyph="&#xe3c9;"
-                                                 Color="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
-                            </Button.ImageSource>
-                        </Button>
+              </AbsoluteLayout>
 
-                        <Border Style="{StaticResource ValueBorder}"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="CenterAndExpand">
-                            <AbsoluteLayout VerticalOptions="CenterAndExpand"
-                                            HeightRequest="228">
+            </Border>
 
-                                <Label x:Name="TimerDescription"
-                                       Text="{Binding TimerDescription}"
-                                       Style="{StaticResource DescriptionLabel}" />
+          </AbsoluteLayout>
 
-                                <Label x:Name="TimerLabel"
-                                       Text="{Binding TimerDisplay}"
-                                       FontSize="{Binding TimerSize}"
-                                       Style="{StaticResource ValueLabel}" />
+        </HorizontalStackLayout>
 
-                            </AbsoluteLayout>
-                        </Border>
+        <HorizontalStackLayout HorizontalOptions="Center" >
 
-                    </AbsoluteLayout>
-                </HorizontalStackLayout>
+          <AbsoluteLayout>
 
-                <BoxView HeightRequest="12"
-                         WidthRequest="0" />
+            <Button Command="{Binding ShowTimerPromptCommand}"
+                    Style="{StaticResource EditButton}" />
 
-                <control:IfView x:Name="TimerButton"
-                                Condition="{Binding Chrono.RestState}">
+            <Border Style="{StaticResource ValueBorder}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand" >
 
-                    <Button x:Name="StartSetButton"
-                            Command="{Binding BeginSetCommand}"
-                            Text="Start Set"
-                            Style="{StaticResource PrimaryButton}" />
+              <AbsoluteLayout VerticalOptions="CenterAndExpand"
+                              HeightRequest="228" >
 
-                    <control:IfView.Else>
+                <Label Text="{Binding TimerDescription}"
+                       Style="{StaticResource DescriptionLabel}" />
 
-                        <Button x:Name="StartRestButton"
-                                Command="{Binding BeginRestCommand}"
-                                Text="Start Rest"
-                                Style="{StaticResource PrimaryButton}" />
+                <Label Text="{Binding TimerDisplay}"
+                       FontSize="{Binding TimerSize}"
+                       Style="{StaticResource ValueLabel}" />
 
-                    </control:IfView.Else>
+              </AbsoluteLayout>
 
-                </control:IfView>
+            </Border>
 
-            </VerticalStackLayout>
-        </ScrollView>
-    </RefreshView>
+          </AbsoluteLayout>
+
+        </HorizontalStackLayout>
+
+        <BoxView HeightRequest="12"
+                 WidthRequest="0" />
+
+        <control:IfView Condition="{Binding Chrono.RestState}" >
+
+          <Button Command="{Binding BeginSetCommand}"
+                  Text="Start Set"
+                  Style="{StaticResource PrimaryButton}" />
+
+          <control:IfView.Else>
+
+            <Button Command="{Binding BeginRestCommand}"
+                    Text="Start Rest"
+                    Style="{StaticResource PrimaryButton}" />
+
+          </control:IfView.Else>
+
+        </control:IfView>
+
+      </VerticalStackLayout>
+
+    </ScrollView>
+
+  </RefreshView>
+
 </ContentPage>

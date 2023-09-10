@@ -4,7 +4,12 @@ namespace GymTimer.Models;
 
 public sealed partial class Settings : ObservableObject
 {
-	[ObservableProperty] private bool autoStartSet = true;
-	[ObservableProperty] private bool playSounds = true;
-	[ObservableProperty] private bool showNotification = true;
+    [ObservableProperty]
+    private bool _autoStartSet = true;
+
+    [ObservableProperty]
+    private bool _playSounds = true;
+
+    [ObservableProperty]
+    private bool _showNotification = true;
 }

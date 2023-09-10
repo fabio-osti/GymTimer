@@ -1,14 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using GymTimer.Models;
+using JetBrains.Annotations;
 
 namespace GymTimer.ViewModels;
 
-public partial class SettingsViewModel : ObservableObject
+[UsedImplicitly]
+public sealed partial class SettingsViewModel : ObservableObject
 {
-	[ObservableProperty] private Settings appSettings;
+    [ObservableProperty]
+    private Settings _appSettings;
 
-	public SettingsViewModel(Settings _settings)
-	{
-		AppSettings = _settings;
-	}
+    public SettingsViewModel(Settings settings)
+    {
+        AppSettings = settings;
+    }
 }
