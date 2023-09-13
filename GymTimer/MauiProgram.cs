@@ -27,6 +27,7 @@ public static class MauiProgram
             .AddSingletonWithShellRoute<SettingsView, SettingsViewModel>("Settings")
             .AddSingleton<Chronometer>()
             .AddSingleton<Ringer>()
+            .AddSingleton<Notifier>()
             .AddSingletonWithShellRoute<TimerView, TimerViewModel>("MainPage");
 
 #if DEBUG

@@ -31,14 +31,14 @@ public sealed class IfView : ContentView
 
     public IfView()
     {
-        Application.Current.Dispatcher.Dispatch(UpdateContent);
+        Application.Current?.Dispatcher.Dispatch(UpdateContent);
     }
 
     public bool Condition
     {
         get => (bool)GetValue(ConditionProperty);
         set {
-            Application.Current.Dispatcher.Dispatch(UpdateContent);
+            Application.Current?.Dispatcher.Dispatch(UpdateContent);
             SetValue(ConditionProperty, value);
         }
     }

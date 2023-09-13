@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JetBrains.Annotations;
+using Plugin.LocalNotification;
 
 namespace GymTimer.ViewModels;
 
@@ -29,9 +30,11 @@ public sealed partial class TimerViewModel : ObservableObject
             }
         };
 
-        Chrono.OnRunningOut += ringer.RingFinishingBell;
-        Chrono.OnOver += ringer.RingFinishedBell;
+        // Chrono.OnRunningOut += ringer.RingFinishingBell;
+        // Chrono.OnOver += ringer.RingFinishedBell;
     }
+    
+    
 
     private static Page MainPage => Application.Current?.MainPage;
 
@@ -58,7 +61,7 @@ public sealed partial class TimerViewModel : ObservableObject
     {
         Chrono.BeginRest();
     }
-
+    
     [RelayCommand]
     private async Task Reset()
     {

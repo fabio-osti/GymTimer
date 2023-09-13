@@ -2,7 +2,7 @@
 
 namespace GymTimer.Helpers;
 
-public class Ringer
+public sealed class Ringer
 {
     private readonly Settings _appSettings;
     private readonly IAudioManager _audioManager;
