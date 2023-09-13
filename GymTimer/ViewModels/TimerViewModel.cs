@@ -29,9 +29,6 @@ public sealed partial class TimerViewModel : ObservableObject
                     break;
             }
         };
-
-        // Chrono.OnRunningOut += ringer.RingFinishingBell;
-        // Chrono.OnOver += ringer.RingFinishedBell;
     }
     
     
