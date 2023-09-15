@@ -53,11 +53,9 @@ public sealed partial class Chronometer : ObservableRecipient
         new Thread(
             () => {
                 switch (TimerValue) {
-                    case > 0 and <= 3:
-                        OnRunningOut?.Invoke();
+                    case > 0 when TimerValue <= _appSettings.RunningOutThreshold: OnRunningOut?.Invoke();
                         break;
-                    case 0:
-                        OnOver?.Invoke();
+                    case 0: OnOver?.Invoke();
                         break;
                 }
             }

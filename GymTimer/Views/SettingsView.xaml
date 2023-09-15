@@ -6,46 +6,55 @@
              x:Class="GymTimer.Views.SettingsView"
              x:DataType="viewmodels:SettingsViewModel"
              Title="Settings" >
-  
-  <VerticalStackLayout Margin="32"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center" >
 
-    <Grid ColumnDefinitions="4*, 1*"
-          RowDefinitions="auto, auto, auto" >
-
-      <Label Grid.Column="0"
-             Grid.Row="0"
-             Text="Automatically start set"
+       <Grid Padding="32"
              VerticalOptions="Center"
-             HorizontalOptions="Start" />
+             ColumnDefinitions="4*, 1*"
+             RowDefinitions="auto, auto, auto, auto" >
+
+              <Label Grid.Column="0"
+                     Grid.Row="0"
+                     Text="Automatically start set"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start" />
       
-      <Switch Grid.Column="1"
-              Grid.Row="0"
-              IsToggled="{Binding AppSettings.AutoStartSet}" />
+              <Switch Grid.Column="1"
+                      Grid.Row="0"
+                      IsToggled="{Binding AppSettings.AutoStartSet}" />
 
-      <Label Grid.Column="0"
-             Grid.Row="1"
-             Text="Play sounds"
-             VerticalOptions="Center"
-             HorizontalOptions="Start" />
+              <Label Grid.Column="0"
+                     Grid.Row="1"
+                     Text="Play sounds"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start" />
       
-      <Switch Grid.Column="1"
-              Grid.Row="1"
-              IsToggled="{Binding AppSettings.PlaySounds}" />
+              <Switch Grid.Column="1"
+                      Grid.Row="1"
+                      IsToggled="{Binding AppSettings.PlaySounds}" />
 
-      <Label Grid.Column="0"
-             Grid.Row="2"
-             Text="Show notifications"
-             VerticalOptions="Center"
-             HorizontalOptions="Start" />
+              <Label Grid.Column="0"
+                     Grid.Row="2"
+                     Text="Show notifications"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start" />
       
-      <Switch Grid.Column="1"
-              Grid.Row="2"
-              IsToggled="{Binding AppSettings.ShowNotification}" />
+              <Switch Grid.Column="1"
+                      Grid.Row="2"
+                      IsToggled="{Binding AppSettings.ShowNotification}" />
+      
+              <Label Grid.Column="0"
+                     Grid.Row="3"
+                     Text="Running Out Threshold"
+                     VerticalOptions="Center"
+                     HorizontalOptions="Start" />
+      
+              <Entry Grid.Column="1"
+                     Grid.Row="3"
+                     Text="{Binding RunningOutThreshold}"
+                     HorizontalTextAlignment="End"
+                     ReturnCommand="{Binding ReturnThresholdEntryCommand}" 
+                     ReturnType="Done" />
 
-    </Grid>
+       </Grid>
 
-  </VerticalStackLayout>
-  
 </ContentPage>

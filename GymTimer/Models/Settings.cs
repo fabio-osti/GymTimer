@@ -12,4 +12,7 @@ public sealed partial class Settings : ObservableObject
 
     [ObservableProperty]
     private bool _showNotification = true;
+
+    [ObservableProperty]
+    private int _runningOutThreshold = 3;
 }
