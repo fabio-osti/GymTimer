@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using JetBrains.Annotations;
+using Settings = GymTimer.Services.Settings;
 
 namespace GymTimer.ViewModels;
 

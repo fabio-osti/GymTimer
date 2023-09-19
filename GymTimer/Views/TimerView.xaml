@@ -2,8 +2,8 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:control="clr-namespace:GymTimer.Helpers"
              xmlns:viewmodels="clr-namespace:GymTimer.ViewModels"
+             xmlns:services="clr-namespace:GymTimer.Services"
              x:Class="GymTimer.Views.TimerView"
              x:DataType="viewmodels:TimerViewModel"
              Title="Timer" >
@@ -96,90 +96,61 @@
   <RefreshView VerticalOptions="Center"
                IsRefreshing="{Binding Refreshing}"
                Command="{Binding ResetCommand}" >
-
     <ScrollView>
-
       <VerticalStackLayout Spacing="8"
                            VerticalOptions="Center" >
 
         <HorizontalStackLayout HorizontalOptions="Center" >
-
           <AbsoluteLayout>
-
             <Button Command="{Binding ShowCounterPromptCommand}"
                     Style="{StaticResource EditButton}" />
-
             <Border Style="{StaticResource ValueBorder}" >
-
               <AbsoluteLayout HeightRequest="228"
                               VerticalOptions="Center" >
-
                 <Label Text="Sets"
                        Style="{StaticResource DescriptionLabel}" />
-
                 <Label Text="{Binding Chrono.SetsCompleted}"
                        Style="{StaticResource ValueLabel}" />
-
               </AbsoluteLayout>
-
             </Border>
-
           </AbsoluteLayout>
-
         </HorizontalStackLayout>
 
         <HorizontalStackLayout HorizontalOptions="Center" >
-
           <AbsoluteLayout>
-
             <Button Command="{Binding ShowTimerPromptCommand}"
                     Style="{StaticResource EditButton}" />
-
             <Border Style="{StaticResource ValueBorder}"
                     VerticalOptions="CenterAndExpand"
                     HorizontalOptions="CenterAndExpand" >
-
               <AbsoluteLayout VerticalOptions="CenterAndExpand"
                               HeightRequest="228" >
-
                 <Label Text="{Binding TimerDescription}"
                        Style="{StaticResource DescriptionLabel}" />
-
                 <Label Text="{Binding TimerDisplay}"
                        FontSize="{Binding TimerSize}"
                        Style="{StaticResource ValueLabel}" />
-
               </AbsoluteLayout>
-
             </Border>
-
           </AbsoluteLayout>
-
         </HorizontalStackLayout>
-
+              
         <BoxView HeightRequest="12"
                  WidthRequest="0" />
-
-        <control:IfView Condition="{Binding Chrono.RestState}" >
-
+        
+        <services:IfView Condition="{Binding Chrono.RestState}" >
           <Button Command="{Binding BeginSetCommand}"
                   Text="Start Set"
                   Style="{StaticResource PrimaryButton}" />
-
-          <control:IfView.Else>
-
+          <services:IfView.Else>
             <Button Command="{Binding BeginRestCommand}"
                     Text="Start Rest"
                     Style="{StaticResource PrimaryButton}" />
-
-          </control:IfView.Else>
-
-        </control:IfView>
-
+          </services:IfView.Else>
+        </services:IfView>
+        
       </VerticalStackLayout>
-
     </ScrollView>
-
   </RefreshView>
 
 </ContentPage>

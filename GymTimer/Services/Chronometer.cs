@@ -2,7 +2,7 @@
 using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace GymTimer.Models;
+namespace GymTimer.Services;
 
 public sealed partial class Chronometer : ObservableRecipient
 {
@@ -53,9 +53,11 @@ public sealed partial class Chronometer : ObservableRecipient
         new Thread(
             () => {
                 switch (TimerValue) {
-                    case > 0 when TimerValue <= _appSettings.RunningOutThreshold: OnRunningOut?.Invoke();
+                    case > 0 when TimerValue <= _appSettings.RunningOutThreshold:
+                        OnRunningOut?.Invoke();
                         break;
-                    case 0: OnOver?.Invoke();
+                    case 0:
+                        OnOver?.Invoke();
                         break;
                 }
             }

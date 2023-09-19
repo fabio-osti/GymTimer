@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Maui;
+using GymTimer.Services;
 using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using Chronometer = GymTimer.Services.Chronometer;
+using Settings = GymTimer.Services.Settings;
 
 namespace GymTimer;
 

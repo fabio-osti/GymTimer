@@ -1,6 +1,6 @@
 ﻿using Plugin.Maui.Audio;
 
-namespace GymTimer.Helpers;
+namespace GymTimer.Services;
 
 public sealed class Ringer
 {
@@ -19,17 +19,19 @@ public sealed class Ringer
 
     private async Task<IAudioPlayer> LoadFile(string fileName) => _audioManager.CreatePlayer(await FileSystem.OpenAppPackageFileAsync(fileName));
 
-    public void RingFinishingBell()
+    public async void RingFinishingBell()
     {
         if (!_runningOutPlayer.IsCompleted || !_appSettings.PlaySounds) return;
-        var player = _runningOutPlayer.Result;
+        
+        var player = await _runningOutPlayer;
         player.Play();
-        Task.Delay(500).ContinueWith(_ => player.Stop());
+        await Task.Delay(500);
+        player.Stop();
     }
 
-    public void RingFinishedBell()
+    public async void RingFinishedBell()
     {
         if (!_overPlayer.IsCompleted || !_appSettings.PlaySounds) return;
-        _overPlayer.Result.Play();
+        (await _overPlayer).Play();
     }
 }

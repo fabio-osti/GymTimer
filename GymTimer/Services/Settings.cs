@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace GymTimer.Models;
+namespace GymTimer.Services;
 
 public sealed partial class Settings : ObservableObject
 {

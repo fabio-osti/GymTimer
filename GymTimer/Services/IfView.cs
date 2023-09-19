@@ -1,4 +1,4 @@
-namespace GymTimer.Helpers;
+namespace GymTimer.Services;
 
 [ContentProperty("Then")]
 public sealed class IfView : ContentView
@@ -11,7 +11,7 @@ public sealed class IfView : ContentView
             false,
             BindingMode.TwoWay,
             propertyChanged: (a, _, c) => {
-                (a as IfView).Condition = (bool)c;
+                ((a as IfView)!).Condition = (bool)c;
             }
         );
 
