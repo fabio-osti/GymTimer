@@ -4,8 +4,12 @@ namespace GymTimer.Services;
 
 public sealed class Notifier
 {
-    private Task<bool> _notificationPermission;
     private readonly Settings _settings;
+
+    private int _restId;
+    private bool _isAppForeground;
+    private Task<bool> _notificationPermission;
+    private NotificationRequest _request;
 
     public Notifier(Settings settings)
     {
@@ -34,17 +38,14 @@ public sealed class Notifier
 
     public void NotifyRestIsFinished()
     {
-        _restId++;
         _request.Title = "Rest is Over";
         _request.Description = _settings.AutoStartSet ?
             "The rest is over, a new set have begun."
             : "The rest is over, begin a new set.";
         _request.Show();
+        
+        _restId++;
     }
-
-    private int _restId;
-    private NotificationRequest _request;
-    private bool _isAppForeground;
 
     public async void NotifyRestIsFinishing()
     {
