@@ -32,8 +32,8 @@ public sealed partial class Chronometer : ObservableRecipient
         _timer.Elapsed += Tick;
     }
 
-    public TimerEvent OnRunningOut { get; set; }
-    public TimerEvent OnOver { get; set; }
+    public TimerEvent OnFinishing { get; set; }
+    public TimerEvent OnFinished { get; set; }
 
     public bool IsResting => RestState && _timer.Enabled;
 
@@ -50,20 +50,21 @@ public sealed partial class Chronometer : ObservableRecipient
             }
         }
 
-        new Thread(
-            () => {
-                switch (TimerValue) {
-                    case > 0 when TimerValue <= _appSettings.RunningOutThreshold:
-                        OnRunningOut?.Invoke();
-                        break;
-                    case 0:
-                        OnOver?.Invoke();
-                        break;
-                }
-            }
-        ).Start();
+        new Thread(When).Start();
 
         TimerValue--;
+    }
+
+    private void When()
+    {
+        switch (TimerValue) {
+            case > 0 when TimerValue <= _appSettings.RunningOutThreshold:
+                OnFinishing?.Invoke();
+                break;
+            case 0:
+                OnFinished?.Invoke();
+                break;
+        }
     }
 
     public void BeginSet()

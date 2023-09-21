@@ -12,29 +12,53 @@ public sealed class Notifier
         _settings = settings;
     }
 
-    public bool IsAppForeground { get; set; }
+    public bool IsAppForeground
+    {
+        get => _isAppForeground;
+        set {
+            _isAppForeground = value;
+            if (!value) _request?.Cancel();
+        }
+    }
 
     public async Task RequestPermission()
     {
         if (_notificationPermission is not null) return;
+
         var notificationEnabled = LocalNotificationCenter.Current.AreNotificationsEnabled();
-        if (await notificationEnabled) {
-            _notificationPermission = notificationEnabled;
-        } else {
-            _notificationPermission = LocalNotificationCenter.Current.RequestNotificationPermission();
-        }
+        _notificationPermission =
+            await notificationEnabled
+                ? notificationEnabled
+                : LocalNotificationCenter.Current.RequestNotificationPermission();
     }
 
-    public async void NotifyRestIsOver()
+    public void NotifyRestIsFinished()
     {
+        _restId++;
+        _request.Title = "Rest is Over";
+        _request.Description = _settings.AutoStartSet ?
+            "The rest is over, a new set have begun."
+            : "The rest is over, begin a new set.";
+        _request.Show();
+    }
+
+    private int _restId;
+    private NotificationRequest _request;
+    private bool _isAppForeground;
+
+    public async void NotifyRestIsFinishing()
+    {
+        if (_request?.NotificationId == _restId) return;
         if (!IsAppForeground) return;
         if (!_settings.ShowNotification) return;
         if (!await _notificationPermission) return;
 
-        await new NotificationRequest {
-            Title = "Rest Over",
-            Description = "The rest is now over and the set has begun.",
+        _request = new NotificationRequest {
+            NotificationId = _restId,
+            Title = "Rest is Almost Over",
+            Description = "Get ready for your new set.",
             Silent = _settings.PlaySounds // So the app sound and the notification sound don't overlap 
-        }.Show();
+        };
+        await _request.Show();
     }
 }

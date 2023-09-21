@@ -11,25 +11,21 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        chronometer.OnRunningOut += ringer.RingFinishingBell;
-        chronometer.OnOver += ringer.RingFinishedBell;
+        chronometer.OnFinishing += ringer.RingFinishingBell;
+        chronometer.OnFinished += ringer.RingFinishedBell;
 
         _notifier = notifier;
-        chronometer.OnOver += notifier.NotifyRestIsOver;
+        chronometer.OnFinishing += notifier.NotifyRestIsFinishing;
+        chronometer.OnFinished += notifier.NotifyRestIsFinished;
 
         MainPage = new AppShell();
     }
-
-    protected override void OnStart()
-    {
-        _ = _notifier.RequestPermission();
-        base.OnStart();
-    }
-
+    
     protected override Window CreateWindow(IActivationState activationState)
     {
         var window = base.CreateWindow(activationState);
 
+        window.Created += (_, _) => _ = _notifier.RequestPermission();
         window.Resumed += (_, _) => _notifier.IsAppForeground = false;
         window.Stopped += (_, _) => _notifier.IsAppForeground = true;
 
