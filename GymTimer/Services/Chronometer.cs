@@ -8,7 +8,7 @@ public sealed partial class Chronometer : ObservableRecipient
 {
     public delegate void TimerEvent();
 
-    private readonly Settings _appSettings;
+    private readonly Settings _settings;
 
     private readonly Timer _timer;
 
@@ -24,9 +24,9 @@ public sealed partial class Chronometer : ObservableRecipient
     [NotifyPropertyChangedRecipients]
     private int _timerSeconds;
 
-    public Chronometer(Settings appSettings)
+    public Chronometer(Settings settings)
     {
-        _appSettings = appSettings;
+        _settings = settings;
 
         _timer = new Timer(1000);
         _timer.Elapsed += Tick;
@@ -42,7 +42,7 @@ public sealed partial class Chronometer : ObservableRecipient
     private void Tick(object o, ElapsedEventArgs e)
     {
         if (TimerSeconds <= 0 && RestState) {
-            if (_appSettings.AutoStartSet) {
+            if (_settings.AutoStartSet) {
                 BeginSet();
             } else {
                 _timer.Stop();
@@ -58,7 +58,7 @@ public sealed partial class Chronometer : ObservableRecipient
     private void Dispatch()
     {
         switch (TimerSeconds) {
-            case > 0 when TimerSeconds <= _appSettings.RunningOutThreshold:
+            case > 0 when TimerSeconds <= _settings.RunningOutThreshold:
                 OnFinishing?.Invoke();
                 break;
             case 0:
