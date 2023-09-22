@@ -50,12 +50,12 @@ public sealed partial class Chronometer : ObservableRecipient
             }
         }
 
-        new Thread(When).Start();
+        new Thread(Dispatch).Start();
 
         TimerValue--;
     }
 
-    private void When()
+    private void Dispatch()
     {
         switch (TimerValue) {
             case > 0 when TimerValue <= _appSettings.RunningOutThreshold:

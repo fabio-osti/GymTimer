@@ -1,5 +1,4 @@
-﻿using GymTimer.Services;
-using Chronometer = GymTimer.Services.Chronometer;
+﻿using Chronometer = GymTimer.Services.Chronometer;
 
 namespace GymTimer;
 
@@ -11,12 +10,13 @@ public partial class App : Application
     {
         InitializeComponent();
 
+        _notifier = notifier;
+
         chronometer.OnFinishing += ringer.RingFinishingBell;
         chronometer.OnFinished += ringer.RingFinishedBell;
 
-        _notifier = notifier;
-        chronometer.OnFinishing += notifier.NotifyRestIsFinishing;
-        chronometer.OnFinished += notifier.NotifyRestIsFinished;
+        chronometer.OnFinishing += _notifier.NotifyRestIsFinishing;
+        chronometer.OnFinished += _notifier.NotifyRestIsFinished;
 
         MainPage = new AppShell();
     }
