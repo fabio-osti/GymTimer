@@ -20,7 +20,7 @@ public sealed partial class TimerViewModel : ObservableObject
 
         Chrono.PropertyChanged += (_, args) => {
             switch (args.PropertyName) {
-                case nameof(Chronometer.TimerValue):
+                case nameof(Chronometer.TimerSeconds):
                     OnPropertyChanged(nameof(TimerDisplay));
                     OnPropertyChanged(nameof(TimerSize));
                     break;
@@ -35,9 +35,9 @@ public sealed partial class TimerViewModel : ObservableObject
 
     private static Page MainPage => Application.Current?.MainPage;
 
-    public int TimerSize => Chrono.TimerValue >= 600 ? 92 : 78;
+    public int TimerSize => Chrono.TimerSeconds >= 600 ? 92 : 78;
 
-    public string TimerDisplay => TimeSpan.FromSeconds(Chrono.TimerValue).ToString(@"m\:ss");
+    public string TimerDisplay => TimeSpan.FromSeconds(Chrono.TimerSeconds).ToString(@"m\:ss");
 
     public string TimerDescription => Chrono.IsResting ? "Rest" : "Set";
 
