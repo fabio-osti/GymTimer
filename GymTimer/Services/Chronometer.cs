@@ -57,13 +57,16 @@ public sealed partial class Chronometer : ObservableRecipient
 
     private void Dispatch()
     {
-        switch (TimerSeconds) {
-            case > 0 when TimerSeconds <= _settings.RunningOutThreshold:
-                OnFinishing?.Invoke();
-                break;
-            case 0:
-                OnFinished?.Invoke();
-                break;
+        var events = TimerSeconds switch {
+            > 0 when TimerSeconds <= _settings.RunningOutThreshold
+                => OnFinishing?.GetInvocationList().Cast<TimerEvent>(),
+            0 => OnFinished?.GetInvocationList().Cast<TimerEvent>(),
+            _ => null
+        };
+        if (events is null) return;
+
+        foreach (var @event in events) {
+            new Task(@event.Invoke).Start();
         }
     }
 
